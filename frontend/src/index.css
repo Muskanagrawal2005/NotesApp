@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+.light-mode textarea{
+  background: #fff;
+  min-height: 100vh;
+  transition: background 0.3s;
+}
+
+.dark-mode textarea{
+  background: #181818;
+  min-height: 100vh;
+  transition: background 0.3s;
+}
+
+.app-root {
+  min-height: 100vh;
+  width: 100vw;
+  transition: background 0.3s;
+}
+
+.light-mode .app-root {
+  background: #fff !important;
+}
+
+.dark-mode .app-root {
+  background: #181818 !important;
+}
+
+.theme-toggle-btn {
+  background: #eee;
+  color: #222;
+  border: none;
+  transition: background 0.3s, color 0.3s;
+}
+.dark-mode .theme-toggle-btn {
+  background: #333;
+  color: #f5f5f5;
+}
