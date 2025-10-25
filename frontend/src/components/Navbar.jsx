@@ -1,82 +1,100 @@
-import React from 'react'
-import { menuLinks } from '../assets/assets'
+import React from 'react';
+import { menuLinks } from '../assets/assets';
 import { useLoginContext } from '../context/LoginContext';
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
-
   const { setShowLogin } = useLoginContext();
   const { user: backendUser, logout: backendLogout } = useAppContext();
   const { theme, toggleTheme } = useTheme();
-  
-  // console.log("Backend user:", backendUser);
 
   const handleLogout = () => {
-    // Logout from both Auth0 and backend
     backendLogout();
   };
 
-  // Define link color based on theme
   const navLinkStyle = {
-    color: theme === 'dark' ? '#f5f5f5' : '#222',
+    color: theme === 'dark' ? '#f5f5f5' : '#374151',
     textDecoration: 'none',
     transition: 'color 0.3s',
   };
 
   return (
-    <div className='pt-4'>
-
-      <div>
-        <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-          {menuLinks.map((link, index) => (
-            <li key={index} >
-              <NavLink
-                style={navLinkStyle}
-                className={({ isActive }) => `block py-2 pr-4 pl-3 duration-200 ${isActive ? "text-orange-700" : "text-grey"}`}
-                to={link.path}
-              >
-                {link.name}
-              </NavLink>
-            </li>
-          ))}
-
-          <li>
-            <button
-              className="px-4 py-2 rounded"
-              style={{ background: '#6366f1', color: '#fff' }}
-              onClick={() => {
-                if (backendUser) {
-                  handleLogout();
-                } else {
-                  setShowLogin(true);
-                }
-              }}
+    <nav
+      className={`w-full fixed top-0 left-0 z-50 px-6 py-4 flex justify-between items-center shadow-md ${
+        theme === 'dark'
+          ? 'bg-gray-900 text-gray-100 border-b border-gray-700'
+          : 'bg-white text-gray-800 border-b border-gray-200'
+      }`}
+    >
+      {/* Left Side - Menu Links */}
+      <ul className="flex items-center space-x-6">
+        {menuLinks.map((link, index) => (
+          <li key={index}>
+            <NavLink
+              style={navLinkStyle}
+              className={({ isActive }) =>
+                `duration-200 font-medium ${
+                  isActive
+                    ? 'text-indigo-600 underline underline-offset-4'
+                    : 'hover:text-indigo-500'
+                }`
+              }
+              to={link.path}
             >
-              {backendUser ? "Logout" : "Login"}
-            </button>
+              {link.name}
+            </NavLink>
           </li>
-          {/* Theme toggle button */}
-          <li>
-            <button
-              onClick={toggleTheme}
-              className="ml-4 px-3 py-2 rounded theme-toggle-btn"
-              aria-label="Toggle dark mode"
-            >
-              {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-            </button>
-          </li>
-        </ul>
-        {/* Display user info if logged in */}
+        ))}
+      </ul>
+
+      {/* Right Side - User Info, Theme Toggle, Login/Logout */}
+      <div className="flex items-center space-x-4">
+        {/* Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          className={`px-3 py-2 rounded transition-all ${
+            theme === 'dark'
+              ? 'bg-gray-700 hover:bg-gray-600 text-gray-200'
+              : 'bg-gray-200 hover:bg-gray-300 text-gray-800'
+          }`}
+          aria-label="Toggle dark mode"
+        >
+          {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
+        </button>
+
+        {/* Login / Logout */}
+        <button
+          className={`px-4 py-2 rounded transition-all ${
+            theme === 'dark'
+              ? 'bg-indigo-500 hover:bg-indigo-600 text-white'
+              : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+          }`}
+          onClick={() => {
+            if (backendUser) {
+              handleLogout();
+            } else {
+              setShowLogin(true);
+            }
+          }}
+        >
+          {backendUser ? 'Logout' : 'Login'}
+        </button>
+
+        {/* User Name (Top Right) */}
         {backendUser && (
-          <div className="mt-2 text-sm">
+          <div
+            className={`text-sm font-medium ${
+              theme === 'dark' ? 'text-gray-300' : 'text-gray-700'
+            }`}
+          >
             Welcome, {backendUser.name}!
           </div>
         )}
       </div>
-    </div>
-  )
-}
+    </nav>
+  );
+};
 
-export default Navbar
+export default Navbar;

@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken"
 
 const generateToken=(userId)=>{
     const payload=userId;
-    return jwt.sign(payload,process.env.JWT_SECRET)
+    return jwt.sign(payload,process.env.JWT_SECRET, { expiresIn: '1h' })
 }
 
 // export const verifyUser=async(req,res)=>{

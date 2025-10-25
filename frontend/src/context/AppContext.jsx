@@ -20,10 +20,10 @@ export const AppProvider = ({ children }) => {
             if(data.success){
                 setUser(data.user)
             }else{
-                navigate('/');
+                logout(); // Logout if token is invalid/expired
             }
         } catch (error) {
-            toast.error(error.message)
+            logout(); // Logout on error (likely expired token)
         }
     }
 
